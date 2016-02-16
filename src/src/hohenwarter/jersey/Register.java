@@ -1,5 +1,6 @@
 package hohenwarter.jersey;
 
+import java.net.URL;
 import java.sql.SQLException;
 
 import javax.ws.rs.GET;
@@ -44,6 +45,9 @@ public class Register {
                     result = 0;
                 }
             } catch(SQLException sqle){
+            	sqle.printStackTrace();
+            	URL location = DBConnection.class.getProtectionDomain().getCodeSource().getLocation();
+                System.out.println(location.getFile());
                 System.out.println("RegisterUSer catch sqle");
                 //When Primary key violation occurs that means user is already registered
                 if(sqle.getErrorCode() == 1062){

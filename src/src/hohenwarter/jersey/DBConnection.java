@@ -1,5 +1,6 @@
 package hohenwarter.jersey;
 
+import java.net.URLDecoder;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -15,16 +16,21 @@ public class DBConnection {
      */
     @SuppressWarnings("finally")
     public static Connection createConnection() throws Exception {
-        Connection con = null;
+        Connection c = null;
         try {
-            Class.forName(Constants.dbClass);
-            con = DriverManager.getConnection(Constants.dbUrl, Constants.dbUser, Constants.dbPwd);
-        } catch (Exception e) {
-            throw e;
-        } finally {
-            return con;
+        	Class.forName("org.sqlite.JDBC");
+            String path = DBConnection.class.getClassLoader().getResource("").getPath();
+            String fullPath = URLDecoder.decode(path, "UTF-8");
+            c = DriverManager.getConnection("jdbc:sqlite:"+fullPath+"../database/"+"users.db");
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            System.exit(0);
+        }finally {
+            return c;
         }
+
     }
+
     /**
      * Method to check whether uname and pwd combination are correct
      * 
