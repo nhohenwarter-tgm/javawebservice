@@ -45,12 +45,9 @@ public class Register {
                     result = 0;
                 }
             } catch(SQLException sqle){
-            	sqle.printStackTrace();
-            	URL location = DBConnection.class.getProtectionDomain().getCodeSource().getLocation();
-                System.out.println(location.getFile());
-                System.out.println("RegisterUSer catch sqle");
+            	System.out.println("RegisterUSer catch sqle");
                 //When Primary key violation occurs that means user is already registered
-                if(sqle.getErrorCode() == 1062){
+                if(sqle.getMessage().equals("UNIQUE constraint failed: user.username")){
                     result = 1;
                 } 
                 //When special characters are used in name,username or password
